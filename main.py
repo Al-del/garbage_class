@@ -70,3 +70,4 @@ hist=keras_model.fit_generator(train,epochs=10,validation_data=validation,callba
 score, acc = keras_model.evaluate(validation)
 print('Test Loss =', score)
 print('Test Accuracy =', acc)
+base_model.save("model_garbage.h5")
