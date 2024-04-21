@@ -3,18 +3,19 @@ import torch
 import torch.nn as nn
 import os
 import torchvision
+batch_size = 16
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 datt = torchvision.datasets.ImageFolder(root='garbage_classification', transform=torchvision.transforms.Compose([torchvision.transforms.Resize((224, 224)), torchvision.transforms.ToTensor()]))
-datt_loader = torch.utils.data.DataLoader(datt, batch_size=32, shuffle=True)
+datt_loader = torch.utils.data.DataLoader(datt, batch_size=batch_size, shuffle=True)
 class_names = datt.classes
 #Split the data into 80% train 10 % validation and 10 % test
 train_size = int(0.8 * len(datt))
 val_size = int(0.1 * len(datt))
 test_size = len(datt) - train_size - val_size
 train_data, val_data, test_data = torch.utils.data.random_split(datt, [train_size, val_size, test_size])
-train_loader = torch.utils.data.DataLoader(train_data, batch_size=32, shuffle=True)
-val_loader = torch.utils.data.DataLoader(val_data, batch_size=32, shuffle=True)
-test_loader = torch.utils.data.DataLoader(test_data, batch_size=32, shuffle=True)
+train_loader = torch.utils.data.DataLoader(train_data, batch_size=batch_size, shuffle=True)
+val_loader = torch.utils.data.DataLoader(val_data, batch_size=batch_size, shuffle=True)
+test_loader = torch.utils.data.DataLoader(test_data, batch_size=batch_size, shuffle=True)
 
 class model(nn.Module):
     def __init__(self):
@@ -23,7 +24,7 @@ class model(nn.Module):
         self.base_model.fc = nn.Linear(2048, len(class_names))
     def forward(self, x):
         return self.base_model(x)
-model = model().to(device)
+#model = model().to(device)
 def train(model, train_loader, val_loader, epochs=10):
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
@@ -56,5 +57,13 @@ def test(model, test):
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
     print(f'Test Accuracy: {100 * correct / total}')
+class model_2(nn.Module):
+    def __init__(self):
+        super(model_2, self).__init__()
+        self.base_model = torchvision.models.efficientnet_b1(pretrained=True)
+        self.base_model._fc = nn.Linear(1280, len(class_names))
+    def forward(self, x):
+        return self.base_model(x)
+model = model_2().to(device)
 train(model, train_loader, val_loader)
 test(model, test_loader)
