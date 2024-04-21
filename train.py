@@ -67,3 +67,5 @@ class model_2(nn.Module):
 model = model_2().to(device)
 train(model, train_loader, val_loader)
 test(model, test_loader)
+#Save the model
+torch.save(model.state_dict(), 'model_garbage.pth')
