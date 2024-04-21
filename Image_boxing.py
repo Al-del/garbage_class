@@ -18,7 +18,7 @@ while True:
 
     # Add an extra dimension to represent the batch size
     resized_frame = np.expand_dims(resized_frame, axis=0)
-
+ 
     # Fit the resized frame into the model
     prediction = model.predict(resized_frame)
     #Print the class predicted
