@@ -25,7 +25,7 @@ def predict(model, input_tensor):
         _, predicted = torch.max(output, 1)  # Get the index of the max log-probability
     return predicted.item()
 
-cap = cv2.VideoCapture(0)  # 0 for default camera, or replace with video file path
+cap = cv2.VideoCapture(-1)  # 0 for default camera, or replace with video file path
 while True:
     # Read frame by frame
     ret, frame = cap.read()
