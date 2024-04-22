@@ -1,11 +1,11 @@
 import numpy as np
 import pandas as pd
 import os
-import cv2
+#import cv2
 import matplotlib.pyplot as plt
 import seaborn as sns
 import tensorflow as tf
-import keras
+from tensorflow import keras
 from tqdm import tqdm
 from keras.callbacks import EarlyStopping,ModelCheckpoint
 from sklearn.metrics import confusion_matrix , accuracy_score
@@ -70,4 +70,4 @@ hist=keras_model.fit_generator(train,epochs=10,validation_data=validation,callba
 score, acc = keras_model.evaluate(validation)
 print('Test Loss =', score)
 print('Test Accuracy =', acc)
-base_model.save("model_garbage.h5")
+base_model.save("model_garbage_v2.h5")
